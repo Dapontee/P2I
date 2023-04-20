@@ -1,3 +1,4 @@
+//Controller qui permet de récupérer l'administrateur via l'api
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ public class AdministrateurApiController : ControllerBase
         _context = context;
     }
 
-    // GET: api/LivreApi
+    // GET: api/AdApi
     public async Task<ActionResult<IEnumerable<Administrateur>>> GetAdministrateur()
     {
         return await _context.Administrateurs.OrderBy(s => s.Pseudo).ToListAsync();

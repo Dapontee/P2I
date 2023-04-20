@@ -1,6 +1,4 @@
-﻿
-
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor Accessor
 <!DOCTYPE html>
 
@@ -8,62 +6,236 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - P2I</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/P2I.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+<body class="fond">
+    <header class="header">
 
+      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" >
+        <div class="center">
+         <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="Index">
+            <strong>
+        <img src="/img/Logo_Gazette.png" alt="Logo_page" title="Accueil" id="logo" height=30px  margin=0 padding=0 class="brand" /> La Gazette Du Cogniticien</a></strong>
+        @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                {
+                    <p class="vueadmin">Vue administrateur</p>
+                }
+       </div>
+        
+        
 
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                {
+        <ul class="navbar-nav">
+           <li class="nav-item text-dark" background-color="green" color="green">
+            <strong>
+            <a class="nav-link text-green" asp-area="" asp-controller="Categorie" asp-action="Index" background-color="green" color="green">Gestion des Articles</a></strong>
+           </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="5" >L'hymne de l'école</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="9" >Les familles de l'ENSC</a>
+          </li>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                   <ul class="nav justify-content-center">
-                        @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
-                        {
-                                                        <li class="nav-item mx-3">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal"
-                                asp-action="Index"><h3><strong>La gazette du Cogniticien</strong></h3></a>
-                                                        </li>
-                                                        <li class="nav-item mt-2">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal"
-                                asp-action="Index">Categorie0</a>
-                                                        </li>
-                                                        <li class="nav-item mx-3 mt-2">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="Index">Categorie1</a>
-                                                        </li>
-                                                        <li class="nav-item mt-2">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal"
-                                asp-action="Logout">Gestion des articles</a>
-                                                        </li>
-                        }
-                        else
-                        {
-                                                        <li class="nav-item mx-3">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="Index">
-                                                                <h3><strong>La gazette du cogniticien</strong></h3>
-                                                            </a>
-                                                        </li>
-                                                             <li class="nav-item mt-2">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal"
-                                asp-action="Index">Categorie0</a>
-                                                        </li>
-                                                        <li class="nav-item mx-3 mt-2">
-                                                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="Index">Categorie1</a>
-                                                        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les Assos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                        }
-
-
-                    </ul>
-                </div>
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="1">
+                BDE</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">BDA</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="4">BDS</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="6">JE</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="7">BDF</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="13">L'ADCOG</a>
             </div>
-        </nav>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les events
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="8">
+                WEI</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="10">WES</a>
+              <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="11">Gala</a>
+                     <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="14">Les campagnes</a>
+              <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="15">Le Krystal</a>
+            </div>
+          </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Point culture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                En construction</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">En construction </a>
+
+            </div>
+          </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les clubs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="12">
+                Terra Terre</a>
+               <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="16">La Gazette du Cogniticien</a>
+                 <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club ciné</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club jeux vidéos</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club dessins</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club musique</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club Philolitté</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club jeux de société</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Et bien d'autres !</a>
+
+            </div>
+          
+           </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Concours écriture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                En construction</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">En construction</a>
+
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les perles des profs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                Best of #1</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">Best of #2</a>
+
+            </div>
+          </li>
+        </ul>
+                }
+
+                else
+                {
+            <ul class="navbar-nav">
+
+                 <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="5" >L'hymne de l'école</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="9" >Les familles de l'ENSC</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les Assos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="1">
+                BDE</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">BDA</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="3">BDS</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="6">JE</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="7">BDF</a>
+<a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="13">L'ADCOG</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les events
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="8">
+                WEI</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="10">WES</a>
+              <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="11">Gala</a>
+                     <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="14">Les campagnes</a>
+              <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="15">Le Krystal</a>
+            </div>
+          </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Point culture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                En construction</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">En construction</a>
+
+            </div>
+          </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les clubs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="12">
+                Terra Terre</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="16">La Gazette du Cogniticien</a>
+                 <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club ciné</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club jeux vidéos</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club dessins</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club musique</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club Philolitté</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Le club jeux de société</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="2">Et bien d'autres !</a>
+            </div>
+          
+           </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Concours écriture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                En construction</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">En construction</a>
+
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Les perles des profs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            <a class="dropdown-item" asp-area="" asp-controller="Article"  asp-action="Index"asp-route-id="17">
+                Best of #1</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Index"asp-route-id="17">Best of #2</a>
+
+            </div>
+          </li>
+        </ul>
+                }
+  </div>
+</nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -78,23 +250,23 @@
 </div>
         @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
         {
-        <div>
-            <button type="button" class="btn btn-secondary btn-sm">
-    <a class="nav-link text-dark"  asp-area="" asp-controller="Journal" asp-action="Logout">Se déconnecter</a>
-  </button>
+            <div>
+                <button type="button" class="btn btn-secondary btn-sm">
+        <a class="nav-link text-dark"  asp-area="" asp-controller="Journal" asp-action="Logout">Se déconnecter</a>
+      </button>
 
 
-    </div>
+        </div>
         }
         else
         {
-         <div>
-                  <button type="button" class="btn btn-secondary btn-sm">
-    <a class="nav-link text-dark"  asp-area="" asp-controller="Journal" asp-action="SeConnecter">Se connecter</a>
-    </button>
+             <div>
+                      <button type="button" class="btn btn-secondary btn-sm">
+        <a class="nav-link text-dark"  asp-area="" asp-controller="Journal" asp-action="SeConnecter">Se connecter</a>
+        </button>
 
-
-    </div>
+<p class="egg">D.2023</p>
+        </div>
 
         }
 </div>
@@ -102,12 +274,30 @@
 </body>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"></link>
     <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
+
 
 </html>
 
 <style>
+
+.fond{
+    background-color: rgb(255, 246, 246);
+}
+.center{
+display: block;
+   margin: 0 auto;
+    text-align:center;
+    font-size: 20px;
+}
+.brand{
+    font-size: 10px;
+   
+}
 .footer {
    position: relative;
    left: 0;
@@ -119,15 +309,40 @@
 
 
 }
+.navbar.navbar-expand-sm.navbar-toggleable-sm.navbar-light.bg-white.border-bottom.box-shadow.mb-3 {
+    flex-wrap: wrap;
+    background-color: rgb(255, 66, 66);
+ }
 .titref{
     font-size: 20px;
+    font-weight: bold;
+
+}
+
+.nav-link.text-green{
+   
+    background-color: rgba(53, 201, 45, 0.77);
+     border-radius: 6px;
+}
+
+.vueadmin{
+  background-color: rgba(53, 201, 45, 0.77);
+
+     border-radius: 6px;
+     font-size: 20px;
+     font-weight: bold;
 }
 .btn.btn-secondary.btn-sm{
  margin: 2px;
-      
+
 }
 .btn.btn-secondary.btn-sm:hover{
     background-color: green;
+}
+.egg{
+  font-style: italic;
+  font-weight: lighter;
+  font-size: 14px;
 }
 
 </style>

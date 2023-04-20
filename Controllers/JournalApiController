@@ -1,3 +1,4 @@
+//API pour récuperer liste de tous les journeaux
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +16,13 @@ public class JournalApiController : ControllerBase
         _context = context;
     }
 
-    // GET: api/LivreApi
+    // GET: api/JournalApi
     public async Task<ActionResult<IEnumerable<Journal>>> GetJournal()
     {
         return await _context.Journeaux.OrderBy(s => s.Titre).ToListAsync();
     }
 
-    // POST: api/LivreApi
+    // POST: api/JournalApi
     [HttpPost]
     public async Task<ActionResult<Journal>> PostJournal(Journal journal)
     {

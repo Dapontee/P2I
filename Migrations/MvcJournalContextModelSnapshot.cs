@@ -41,8 +41,12 @@ namespace P2I.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("JournalId")
+                    b.Property<int?>("CategorieId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Illustration")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Texte")
                         .IsRequired()
@@ -54,6 +58,8 @@ namespace P2I.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategorieId");
+
                     b.ToTable("Articles");
                 });
 
@@ -63,17 +69,11 @@ namespace P2I.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");
-
-                    b.HasIndex("ArticleId")
-                        .IsUnique();
 
                     b.ToTable("Categories");
                 });
@@ -91,11 +91,7 @@ namespace P2I.Migrations
                     b.Property<DateTime>("DateParution")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Numero")
+                    b.Property<int?>("Numero")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Titre")
@@ -106,19 +102,13 @@ namespace P2I.Migrations
                     b.ToTable("Journeaux");
                 });
 
-            modelBuilder.Entity("Categorie", b =>
-                {
-                    b.HasOne("Article", null)
-                        .WithOne("CategorieArticle")
-                        .HasForeignKey("Categorie", "ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Article", b =>
                 {
-                    b.Navigation("CategorieArticle")
-                        .IsRequired();
+                    b.HasOne("Categorie", "CategorieArticle")
+                        .WithMany()
+                        .HasForeignKey("CategorieId");
+
+                    b.Navigation("CategorieArticle");
                 });
 #pragma warning restore 612, 618
         }

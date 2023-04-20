@@ -1,27 +1,51 @@
+@* Vue qui permet l'affichage d'un pdf *@
+
 <html>
 
 @model Journal
 
 @{
     ViewData["Title"] = "Journal";
-    Layout="~/Views/Shared/_LayoutPdf.cshtml";
-    
-
 }
 
+<body>
 
+@* Utilisation de PDF.js bibliotheque externe qui permet d'afficher dans la majorité des telephones et navigateur un pdf de manière pro *@
 
+<iframe id="pdfViewer" src="@Url.Action("AfficherPdf", new{id=@Model.Numero})" width="100%" height="800px"></iframe>
 
-  <head>
-    <title>Titre du document</title>
-  </head>
-  <body>
+@section scripts {
+    <script src="~/Scripts/pdf.js"></script>
+    <script>
+        var pdfViewer = document.getElementById('pdfViewer');
+        pdfViewer.onload = function () {
+            var pdfUrl = pdfViewer.src;
+            var pdfjsLib = window['pdfjs-dist/build/pdf'];
+            pdfjsLib.GlobalWorkerOptions.workerSrc = "~/Scripts/pdf.worker.js"; // appel le worker pour faire fonctionner Pdf.js
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                for (var num = 1; num <= pdfDoc.numPages; num++) {
+                    pdfDoc.getPage(num).then(renderPage);
+                }
+            });
+        }
 
-    <h1>Vous lisez le numéro @{@Model.Numero} de la Gazette</h1>
-
-    <embed src="~/PDF/@{@Model.Numero}.pdf" width="100%" height="100%" type="application/pdf" title="PDF NO FOUND" />
-
-
+        function renderPage(page) {
+            var scale = 1.5;
+            var viewport = page.getViewport({ scale: scale });
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            var renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            page.render(renderContext);
+            pdfViewer.contentDocument.body.appendChild(canvas);
+        }
+    </script>
+}
 
     <style>
       .container {

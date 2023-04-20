@@ -1,0 +1,39 @@
+@* Form qui permet de supprimer un article *@
+
+@model Article
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Vous êtes sur le point de supprimer un numéro</h2>
+<hr />
+
+<h4> Êtes vous sûrs ? </h4>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayFor(model => model.Titre)
+        </dt>
+
+        <dt class="col-sm-3">
+            @Html.DisplayFor(model => model.CategorieArticle)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Illustration)
+        </dd>
+            <dd class="col-sm-9">
+
+
+
+
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="@Model.Id" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
+        <a asp-action="Index"><button type="button" class="btn btn-outline-primary">
+      Revenir en arrière</a>
+    </form>
+</div>

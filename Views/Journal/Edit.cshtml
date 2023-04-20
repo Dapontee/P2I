@@ -1,0 +1,32 @@
+@model Journal
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Editer le journal</h2>
+<hr />
+@using (Html.BeginForm("Enregistrer", "Journal"))
+{
+   @Html.HiddenFor(j=>j.Id)
+   <div class="form-group">
+@Html.LabelFor(j => j.Titre)
+@Html.TextBoxFor(j => j.Titre, new { @class= "form-control"})
+   </div>
+   <div class="form-group">
+@Html.LabelFor(j => j.Couverture)
+@Html.TextBoxFor(j => j.Couverture, new { @class= "form-control"})
+   </div>
+   <div class="form-group">
+@Html.LabelFor(j => j.DateParution)
+@Html.TextBoxFor(j => j.DateParution, new { @class= "form-control"})
+   </div>
+   <div class="form-group">
+@Html.LabelFor(j => j.Numero)
+@Html.TextBoxFor(j => j.Numero, new { @class= "form-control"})
+   </div>
+  <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+}
+
+

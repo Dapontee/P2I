@@ -40,7 +40,11 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Journal}/{action=Index}/{id?}");
+    pattern: "{controller=Journal}/{action=Index}/{id?}"); // Permet de faire de l'index du journal la page d'accueil du site
+
+app.MapControllerRoute( //add
+    name: "article",
+    pattern: "{controller=article}/{action=Index}/{id?}");
 
 SeedDataContent.InitDB();
 

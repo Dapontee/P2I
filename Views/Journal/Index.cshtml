@@ -1,4 +1,6 @@
-@model IEnumerable<Journal>
+@* Index le plus important du site qui est la page d'accueil, affiche tous les journaux par année et le journal à la une *@
+
+@model IEnumerable<IGrouping<int, Journal>>  
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor Accessor
 
@@ -10,54 +12,211 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/P2I.styles.css" asp-append-version="true" />
 </head>
-<h2>Les derniers numéros de la gazette</h2> </br>
+<br>
+
+<h2 class="h2" >Bienvenue dans la Gazette 2.0 !</h2> 
+<p class="information">Bon à savoir : la Gazette a été crée en 2019</p>
+</br>
 
 @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
 {
-    <a asp-action="Create"><button type="button" class="btn btn-outline-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-    </svg> Ajoutez un numéro</button></a>
+        <a asp-action="Create"><button type="button" class="btn btn-outline-primary btn-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          </svg> Ajoutez un numéro</button>
+        </a>
 
 }
-
-<p>
-
-</p>
-
+@* Affichage des journaux par année *@
 <table >
     <div class="row">
-        @foreach (var item in Model)
-        {
+     <div class="une">  
+ <h3>À la Une</h3>
+  <br>
+@foreach( var groupe in Model.Where(g=>g.Key==2023))
+{
 
-                                                                                            <div class="col-sm-6 col-md-4 col-lg-3">
-                                                                                                <div class="container">
-                                                                                                    <a asp-action="PDF" asp-route-id="@item.Numero">
-                                                                                                            <img src="@Url.Content(item.Couverture)" alt="couverture19" class="img-thumbnail a" >
+    
+ @foreach(var journal in groupe)
+ {
+                                                                                              
+       <a asp-action="PDF" asp-route-id="@journal.Numero">                                                                                                     
+       <img src="~/Couverture/@{@journal.Couverture}.png" alt="CouvertureDuNuméro" class="img-thumbnail a2" >
+       </a>
+        <p class="center" >@Html.DisplayFor(modelItem => journal.Titre) </p>
 
-                                                                                                    </a>
-
-                                                                                                    <p class="center">@Html.DisplayFor(modelItem => item.Titre) </p>
-                    @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+  @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
                     {
-                                                                                                            <p><a asp-action="Delete" asp-route-id="@item.Id" ><button type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                                                                                                        </svg> Supprimer</button></a></p> 
+                        <p><a asp-action="Delete" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-danger btn-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                        </svg> Supprimer</button></a></p> 
+                        <p><a asp-action="Edit" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-dark btn-lg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512"> <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg> Modifier</button></a></p>
                     }
 
-                                                                                                </div>
-                                                                                            </div>   
+                                                                                              
         }
+ }
+
+ </div>
+<h2>À découvrir ou re-découvrir</h2>
+<h3>2022</h3>
+</br>
+@foreach( var groupe in Model.Where(g=>g.Key==2022))
+{
+
+
+ @foreach(var journal in groupe)
+ {
+ <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="container">
+        <a asp-action="PDF" asp-route-id="@journal.Numero">
+        <img src="~/Couverture/@{@journal.Couverture}.png" alt="CouvertureDuNuméro" class="img-thumbnail a" >
+        </a>   
+        <p class="center1">@Html.DisplayFor(modelItem => journal.Titre) </p>
+    
+  @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                    {
+                     <p><a asp-action="Delete" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                     </svg> Supprimer</button></a></p> 
+                     <p><a asp-action="Edit" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512"> <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg> Modifier</button></a></p>
+                    }
+
+        </div>
+ </div>   
+
+  }
+ }
+
+    <h3>2021</h3>
+    </br>
+@foreach( var groupe in Model.Where(g=>g.Key==2021))
+{
+
+  
+ @foreach(var journal in groupe)
+ {
+   <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="container">
+       <a asp-action="PDF" asp-route-id="@journal.Numero">
+       <img src="~/Couverture/@{@journal.Couverture}.png" alt="CouvertureDuNuméro" class="img-thumbnail a" >
+       </a>
+ <p class="center1">@Html.DisplayFor(modelItem => journal.Titre) </p>
+  @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                    {
+                      <p><a asp-action="Delete" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                      </svg> Supprimer</button></a></p> 
+                      <p><a asp-action="Edit" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512"> <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg> Modifier</button></a></p> 
+                    }
+
+        </div>
+    </div>   
+        }
+ }
+
+  
+
+ <h3>2020</h3>
+ </br>
+@foreach( var groupe in Model.Where(g=>g.Key==2020))
+{
+
+
+ @foreach(var journal in groupe)
+ {
+
+  <div class="col-sm-6 col-md-4 col-lg-3">
+    <div class="container">
+       <a asp-action="PDF" asp-route-id="@journal.Numero">
+       <img src="~/Couverture/@{@journal.Couverture}.png" alt="CouvertureDuNuméro" class="img-thumbnail a" >
+       </a>
+ <p class="center1">@Html.DisplayFor(modelItem => journal.Titre) </p>
+  @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                    {
+                      <p><a asp-action="Delete" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                       </svg> Supprimer</button></a></p> 
+                      <p><a asp-action="Edit" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512"> <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg> Modifier</button></a></p>
+                    }
+
+     </div>
+ </div> 
+
+  }
+
+}
+  <h3>2019</h3>
+  </br>
+@foreach( var groupe in Model.Where(g=>g.Key==2019))
+{
+
+
+ @foreach(var journal in groupe)
+ {
+  <div class="col-sm-6 col-md-4 col-lg-3">
+     <div class="container">
+       <a asp-action="PDF" asp-route-id="@journal.Numero">
+      <img src="~/Couverture/@{@journal.Couverture}.png" alt="CouvertureDuNuméro" class="img-thumbnail a" >
+     </a>
+ <p class="center1">@Html.DisplayFor(modelItem => journal.Titre) </p>
+  @if (Accessor.HttpContext!.Session.GetString("Pseudo") != null)
+                    {
+                       <p><a asp-action="Delete" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                       </svg> Supprimer</button></a></p> 
+                       <p><a asp-action="Edit" asp-route-id="@journal.Id" ><button type="button" class="btn btn-outline-dark"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512"> <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"/></svg> Modifier</button></a></p>
+                    }
+
+     </div>
+ </div>   
+        }
+
+ }
+
     </tr>
- </table>
+
+</table>
 
 
 <style>
-.a {
-    object-fit: cover;
-    height: 250px;
-    width: 150px;
-    max-width: unset;
+
+.center1{
+font-size: 17px;
+text-align: center;
 }
+
+.a2{
+object-fit: cover;
+height: 450px;
+width: 350px;
+max-width: unset;
+
+}
+
+.a {
+object-fit: cover;
+height: 320px;
+width: 240px;
+max-width: unset;
+ 
+}
+
+.h2 {
+text-align: center;
+font-size: 30px;   
+}
+
+.information{
+text-align: center;
+}
+
+.col-sm-6.col-md-4.col-lg-3
+{
+text-align: center;
+}
+
+.une{
+text-align: center;
+display: inline-block;
+padding: 50px;  
+}
+
 </style>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,4 +1,4 @@
-// Add students
+// Seedata de test pour tester la bd à ses débuts, plus vraiment utile mais si jamais elle peut servir, elle est ici
 public class SeedDataContent
 {
     public static void InitDB()
@@ -14,10 +14,10 @@ public class SeedDataContent
             Journal VoyageAuBoutDeLaNuit = new Journal
             {
                 Titre = "Voyage au bout de la nuit",
-                Genre = "Roman",
+               
                 DateParution = DateTime.Parse("1932-10-15"),
                 Couverture = "https://imageshack.com/i/pmtQ1HBEp",
-                Numero = 1,
+                Numero = 2,
             };
 
             context.Journeaux.AddRange(
@@ -29,12 +29,32 @@ public class SeedDataContent
             Administrateur Proust = new Administrateur
             {
                 Pseudo = "MP",
-                Mdp = "larecherchedeswann7",
+                Mdp = "123",
 
             };
             context.Administrateurs.AddRange(
                 Proust
             );
+
+            Categorie BDE = new Categorie
+            {
+                Nom = "BDE",
+
+            };
+            context.Categories.AddRange(
+               BDE
+           );
+            Article Promo2024 = new Article
+            {
+                Titre = "Promo2024",
+                Texte = "et voici la prendjzduzdefcjnnddsdhbsdhsxhshbhbshbschbcshbcshbschbhbcs",
+                CategorieId = 1,
+
+
+            };
+            context.Articles.AddRange(
+               Promo2024
+           );
 
             context.SaveChanges();
         }

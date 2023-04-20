@@ -25,7 +25,8 @@ public class JournalController : Controller
         }
     }
 
-
+// Post qui connecte l'administrateur si les identifiants rentrés sont corrects
+//Crée une session s'il est connecté car il n'y a qu'un seul utilisateur dans l'appli qui est aussi administrateur
     [HttpPost]
     public ActionResult SeConnecter(Administrateur u)
     {
@@ -60,7 +61,7 @@ public class JournalController : Controller
 
 
     }
-
+//Action qui déconnecte la session de l'administrateur
     public ActionResult Logout()
     {
         HttpContext.Session.Clear();
@@ -68,30 +69,91 @@ public class JournalController : Controller
         return RedirectToAction("SeConnecter");
     }
 
-    // GET: Livre
-    public async Task<IActionResult> Index()
+    // GET: Journal, acces à l'index des jouneaux, permet de les afficher par année
+    public IActionResult Index()
     {
-        var numeros = await _context.Journeaux.OrderBy(m => m.Titre).ToListAsync();
-        return View(numeros);
-
+        var groupeJourneaux = _context.Journeaux.GroupBy(j=>j.DateParution.Year);
+        return View(groupeJourneaux);
 
     }
 
-
-    public async Task<IActionResult> PDF(int id)
+//Vue de l'edition d'un journal (modifier)
+    public async Task<IActionResult>  Edit(int? id)
     {
-        var journal = await _context.Journeaux.Where(x => x.Numero == id).FirstOrDefaultAsync();
 
-        return View(journal);
+       if (id == null)
+        {
+            return NotFound();
+        }
+
+        var journal = await _context.Journeaux
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (journal == null)
+        {
+            return NotFound();
+        }
+
+        return View(journal);   
+
     }
 
+// Enregistrer la modif d'un journal
+ [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Enregistrer (int id, [Bind("Id, Titre, Couverture, DateParution, Numero")] Journal journaldto)
+    {
+        {
+            if (id != journaldto.Id)
+            {
+                return NotFound();
+            }
+            var journal = _context.Journeaux.Find(id);
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    journal!.Update(journaldto);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!JournalExists(journaldto.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(journaldto);
+        }
+    }
+       private bool JournalExists(int id)
+    {
+        return _context.Journeaux.Any(e => e.Id == id);
+    }
 
+    //Afficher le pdf en le convertissant en bit puis utilisant PDF.js
+    public IActionResult PDF(int id)
+    {
+      
+    string ReportURL = string.Format("{0}.pdf",id);  
+    byte[] FileBytes =  System.IO.File.ReadAllBytes("wwwroot/PDF/"+ ReportURL);  
+    return File(FileBytes, "application/PDF"); 
+       
+    }
+
+//Vue qui permet de créer un journal
     public IActionResult Create()
     {
         return View();
     }
 
+//Form qui valide la création d'un journal dans la bd
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateForm([Bind("Id, Titre, Genre, Couverture, Numero, DateParution")] Journal journal)
     {
@@ -105,6 +167,8 @@ public class JournalController : Controller
         // At this point, something failed: redisplay form
         return View(journal);
     }
+
+    // Supprimer un journal de la bd
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -121,6 +185,8 @@ public class JournalController : Controller
 
         return View(journal);
     }
+
+//Post qui supprime le journal de la bd
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
