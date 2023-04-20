@@ -16,7 +16,8 @@ public class SeedDataContent
                 Titre = "Voyage au bout de la nuit",
                 Genre = "Roman",
                 DateParution = DateTime.Parse("1932-10-15"),
-
+                Couverture = "https://imageshack.com/i/pmtQ1HBEp",
+                Numero = 1,
             };
 
             context.Journeaux.AddRange(

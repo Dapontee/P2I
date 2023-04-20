@@ -1,0 +1,47 @@
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+
+[Route("api/[controller]")]
+[ApiController]
+
+public class JournalApiController : ControllerBase
+{
+    private readonly MvcJournalContext _context;
+
+    public JournalApiController(MvcJournalContext context)
+    {
+        _context = context;
+    }
+
+    // GET: api/LivreApi
+    public async Task<ActionResult<IEnumerable<Journal>>> GetJournal()
+    {
+        return await _context.Journeaux.OrderBy(s => s.Titre).ToListAsync();
+    }
+
+    // POST: api/LivreApi
+    [HttpPost]
+    public async Task<ActionResult<Journal>> PostJournal(Journal journal)
+    {
+        _context.Journeaux.Add(journal);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetJournal), new { id = journal.Id }, journal);
+    }
+
+    // DELETE: api/LivreApi/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteJournal(int id)
+    {
+        var journal = await _context.Journeaux.FindAsync(id);
+        if (journal == null)
+            return NotFound();
+
+        _context.Journeaux.Remove(journal);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+}

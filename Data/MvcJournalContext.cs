@@ -10,6 +10,7 @@ public class MvcJournalContext : DbContext
     public DbSet<Journal> Journeaux { get; set; } = null!;
 
 
+
     public string DbPath { get; private set; }
 
     public MvcJournalContext()

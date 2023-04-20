@@ -1,0 +1,56 @@
+@model Administrateur
+
+
+@{
+    ViewData["Title"] = "SeConnecter";
+}
+
+<h2>Si vous êtes administrateurs de la gazette, renseignez votre identifiant</h2>
+<hr />
+
+
+@*  
+    Vue de la page de connexion
+*@
+
+
+
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+@using (Html.BeginForm("Seconnecter", "Journal", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="form-container">
+        <div class="form-box">
+            <div class="header">
+                <h2 class="mb-4">Administrateur</h2>
+                </div>
+                    <div class="form">
+                <div class="mb-2">
+                    @Html.TextBoxFor(m => m.Pseudo, new { @class = "form-control", id = "Username", placeholder = "Nom d'utilisateur*",
+required = "required" })
+                    @Html.ValidationMessageFor(m => m.Pseudo, "", new { @class = "error text-danger" })
+                            </div>
+                <div class="mb-4">
+                    @Html.TextBoxFor(m => m.Mdp, new { @class = "form-control", type = "password", placeholder = "Mot de passe*",
+required = "" })
+                    @Html.ValidationMessageFor(m=>m.Mdp, "", new { @class = "error text-danger" })
+                        </div>
+                <button type="submit" class="rounded-pill">Se connecter</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
